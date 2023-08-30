@@ -20,6 +20,12 @@ BEGIN
 
     SELECT RAISE(ABORT, 'CVV must have either 3 or 4 characters.')
     WHERE LENGTH(NEW.cvv) < 3 OR LENGTH(NEW.cvv) > 4;
+
+    SELECT RAISE(ABORT, '"exp_date" must be in the format YYYY-MM-DD.')
+    WHERE DATE(NEW.exp_date) IS NULL;
+
+    SELECT RAISE(ABORT, '"exp_date" must be in the future.')
+    WHERE NEW.exp_date <= DATE('now');
 END;
 
 CREATE TRIGGER block_updates
