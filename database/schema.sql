@@ -38,9 +38,3 @@ BEGIN
         AND card_number = NEW.card_number 
         AND cvv = NEW.cvv;
 END;
-
-CREATE TRIGGER block_updates
-BEFORE UPDATE ON cards
-BEGIN
-    SELECT RAISE(ABORT, "Updates not allowed. A new card must be issued.");
-END;
