@@ -17,6 +17,9 @@ FOR EACH ROW
 BEGIN
     SELECT RAISE(ABORT, 'Account holder name must have at least 3 characters.')
     WHERE LENGTH(NEW.holder_name) < 3;
+
+    SELECT RAISE(ABORT, 'CVV must have either 3 or 4 characters.')
+    WHERE LENGTH(NEW.cvv) < 3 OR LENGTH(NEW.cvv) > 4;
 END;
 
 CREATE TRIGGER block_updates
