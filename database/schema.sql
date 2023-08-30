@@ -12,7 +12,7 @@ CREATE TABLE cards (
 DROP TRIGGER IF EXISTS data_validation;
 
 CREATE TRIGGER data_validation
-BEFORE insert ON cards
+BEFORE INSERT ON cards
 FOR EACH ROW
 BEGIN
     SELECT RAISE(ABORT, 'Account holder name must have at least 3 characters.')
@@ -26,6 +26,17 @@ BEGIN
 
     SELECT RAISE(ABORT, '"exp_date" must be in the future.')
     WHERE NEW.exp_date <= DATE('now');
+END;
+
+CREATE TRIGGER exp_date_end_of_month
+AFTER INSERT ON cards
+BEGIN
+    -- Set NEW.exp_date to the end of the month.
+    UPDATE cards 
+    SET exp_date = DATE(NEW.exp_date, '+1 month', 'start of month', '-1 day')
+    WHERE holder_name = NEW.holder_name 
+        AND card_number = NEW.card_number 
+        AND cvv = NEW.cvv;
 END;
 
 CREATE TRIGGER block_updates
