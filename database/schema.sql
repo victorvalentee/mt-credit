@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS cards;
 CREATE TABLE cards (
     exp_date TEXT NOT NULL,
     holder_name TEXT NOT NULL,
-    card_number TEXT NOT NULL,
+    card_number INTEGER NOT NULL,
     cvv INTEGER NOT NULL,
     PRIMARY KEY(holder_name, card_number, cvv)
 ) STRICT;
