@@ -45,4 +45,7 @@ My main focus now will be to implement the three "routes":
 Now that both the API functions and the Flask server are implemented, I'll start creating tests for the routes.
 These tests will ensure that:
 1. The Flask server is working as expected
-2. The http request/response logic is well integrated with the API backend functions 
+2. The http request/response logic is well integrated with the API backend functions
+
+### Next Step: Card Number Validation
+I'll incorporate the validation mechanism from `python-creditcard` library. This will probably change all card numbers I've been using so far.
