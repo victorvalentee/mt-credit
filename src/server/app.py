@@ -3,10 +3,12 @@ from utils import initialize_database
 import api_functions
 import sqlite3
 from creditcard import CreditCard
+from hashlib import sha256
 
 
 app = Flask(__name__)
 initialize_database()
+
 
 # Route to list all credit cards
 @app.route('/api/v1/credit-card', methods=['GET'])
@@ -30,11 +32,17 @@ def store_credit_card():
     data = request.json
 
     credit_card_info = dict(data)
+    credit_card_id = ''.join(str(info) for info in credit_card_info.values())
+    credit_card_hash = sha256(credit_card_id.encode()).hexdigest()
 
     card_number = credit_card_info['card_number']
     
     if CreditCard(card_number).is_valid():
         with sqlite3.connect('../database/credit_cards.db') as db_conn:
+            # Retains only the last 4 digits of the credit card number
+            credit_card_info['card_number'] = f'**** **** **** {card_number[-4:]}'
+            credit_card_info['credit_card_hash'] = credit_card_hash
+
             api_functions.create_credit_card(db_conn, credit_card_info=credit_card_info)
         return jsonify({'message': 'Credit card stored successfully'}), 201
     else:
