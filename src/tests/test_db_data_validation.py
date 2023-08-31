@@ -50,7 +50,7 @@ def test_account_holder_length_success(test_db):
     assert actual_result == expected_result
 
 
-def test_cvv_success(test_db):     
+def test_cvv_length_success(test_db):     
     cursor = test_db.cursor()
     cursor.execute(
         """
@@ -72,7 +72,7 @@ def test_cvv_success(test_db):
     assert actual_result == expected_result
 
 
-def test_cvv_fail(test_db):     
+def test_cvv_length_fail(test_db):     
     cursor = test_db.cursor()
 
     with pytest.raises(sqlite3.IntegrityError, match="CVV must have either 3 or 4 characters."):
@@ -81,5 +81,27 @@ def test_cvv_fail(test_db):
             """
             INSERT INTO cards (exp_date, holder_name, card_number, cvv)
             VALUES ('2024-04-01', 'VVV', '123abc', 12);
+            """
+        )
+
+
+def test_exp_date_fail(test_db):     
+    cursor = test_db.cursor()
+
+    with pytest.raises(sqlite3.IntegrityError, match='"exp_date" must be in the future.'):
+        # Tries to insert invalid exp_date
+        cursor.execute(
+            """
+            INSERT INTO cards (exp_date, holder_name, card_number, cvv)
+            VALUES ('2019-04-01', 'VVV', '123abc', 123);
+            """
+        )
+
+    with pytest.raises(sqlite3.IntegrityError, match='"exp_date" must be in the format YYYY-MM-DD.'):
+        # Tries to insert invalid exp_date
+        cursor.execute(
+            """
+            INSERT INTO cards (exp_date, holder_name, card_number, cvv)
+            VALUES ('31-12-2023', 'VVV', '123abc', 123);
             """
         )
