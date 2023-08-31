@@ -40,3 +40,9 @@ My main focus now will be to implement the three "routes":
 - GET /api/v1/credit-card - list all credit cards
 - GET /api/v1/credit-card/<id> - get credit card by id (card number)
 - POST /api/v1/credit-card - store new credit card info
+
+### Next Step: Integration Tests (Flask Server + API functions)
+Now that both the API functions and the Flask server are implemented, I'll start creating tests for the routes.
+These tests will ensure that:
+1. The Flask server is working as expected
+2. The http request/response logic is well integrated with the API backend functions 
