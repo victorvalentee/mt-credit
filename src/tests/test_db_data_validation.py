@@ -34,7 +34,7 @@ def test_account_holder_length_fail(test_db):
         )
 
 
-def test_account_holder_length_fail(test_db):     
+def test_account_holder_length_success(test_db):     
     cursor = test_db.cursor()
     cursor.execute(
         """
@@ -48,3 +48,38 @@ def test_account_holder_length_fail(test_db):
 
     expected_result = [('2024-04-30', 'VVV', '123abc', None)]
     assert actual_result == expected_result
+
+
+def test_cvv_success(test_db):     
+    cursor = test_db.cursor()
+    cursor.execute(
+        """
+            INSERT INTO cards (exp_date, holder_name, card_number, cvv)
+            VALUES 
+                ('2024-04-01', 'VVV', '123abc', 123),
+                ('2024-04-01', 'VVV', '123abcd', NULL);
+        """
+    )
+
+    cursor.execute('SELECT * FROM cards;')
+    actual_result = cursor.fetchall()
+
+    expected_result = [
+        ('2024-04-30', 'VVV', '123abc', 123),
+        ('2024-04-30', 'VVV', '123abcd', None)
+    ]
+
+    assert actual_result == expected_result
+
+
+def test_cvv_fail(test_db):     
+    cursor = test_db.cursor()
+
+    with pytest.raises(sqlite3.IntegrityError, match="CVV must have either 3 or 4 characters."):
+        # Tries to insert invalid cvv
+        cursor.execute(
+            """
+            INSERT INTO cards (exp_date, holder_name, card_number, cvv)
+            VALUES ('2024-04-01', 'VVV', '123abc', 12);
+            """
+        )
