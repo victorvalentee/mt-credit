@@ -24,3 +24,11 @@ These are the data validations constraints enforced at schema level:
 
 #### Off-Schema Data Validation
 Credit card number validation and encryption will be handled at API level.
+
+### Next Step: API Functions
+These are the functions that will be implemented at API level:
+- List all credit cards
+- Get credit card details (by id)
+- Issue new credit card
+
+All of these functions will be implemented using the TDD approach, and I'll focus on unit tests for now.
