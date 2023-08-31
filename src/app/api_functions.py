@@ -12,7 +12,6 @@ def get_card_by_id(db_conn, id="123abc456"):
     cursor = db_conn.cursor()
     cursor.execute(f"SELECT * FROM cards WHERE card_number = '{id}'")
     card_details = cursor.fetchall()
-    db_conn.close()
 
     return card_details
 
