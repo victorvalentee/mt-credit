@@ -32,3 +32,11 @@ These are the functions that will be implemented at API level:
 - Issue new credit card
 
 All of these functions will be implemented using the TDD approach, and I'll focus on unit tests for now.
+
+### Next Step: API Server (Flask)
+Now that the API functions are in place, I'll start implementing the Flask server.
+
+My main focus now will be to implement the three "routes":
+- GET /api/v1/credit-card - list all credit cards
+- GET /api/v1/credit-card/<id> - get credit card by id (card number)
+- POST /api/v1/credit-card - store new credit card info
