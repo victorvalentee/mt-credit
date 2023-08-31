@@ -5,6 +5,7 @@ import sqlite3
 
 
 app = Flask(__name__)
+initialize_database()
 
 # Route to list all credit cards
 @app.route('/api/v1/credit-card', methods=['GET'])
@@ -33,5 +34,4 @@ def store_credit_card():
 
 
 if __name__ == '__main__':
-    initialize_database()
     app.run(debug=True)
