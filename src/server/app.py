@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from utils import initialize_database
 import api_functions
 import sqlite3
+from creditcard import CreditCard
 
 
 app = Flask(__name__)
@@ -28,9 +29,16 @@ def get_credit_card(card_number):
 def store_credit_card():
     data = request.json
 
-    with sqlite3.connect('../database/credit_cards.db') as db_conn:
-        api_functions.create_credit_card(db_conn, credit_card_info=dict(data))
-    return jsonify({'message': 'Credit card stored successfully'}), 201
+    credit_card_info = dict(data)
+
+    card_number = credit_card_info['card_number']
+    
+    if CreditCard(card_number).is_valid():
+        with sqlite3.connect('../database/credit_cards.db') as db_conn:
+            api_functions.create_credit_card(db_conn, credit_card_info=credit_card_info)
+        return jsonify({'message': 'Credit card stored successfully'}), 201
+    else:
+        return jsonify({'message': 'Credit card number is not valid'}), 400
 
 
 if __name__ == '__main__':

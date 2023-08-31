@@ -7,11 +7,23 @@ def client():
     with app.test_client() as client:
         yield client
 
-def test_store_credit_card(client):
+def test_store_credit_card_fail(client):
     data = {
         'exp_date': '2088-12-31',
         'holder_name': 'John Doe',
         'card_number': '8884567890123456',
+        'cvv': 123
+    }
+
+    response = client.post('/api/v1/credit-card', json=data)
+    assert response.json == {'message': 'Credit card number is not valid'}
+
+
+def test_store_credit_card(client):
+    data = {
+        'exp_date': '2088-12-31',
+        'holder_name': 'John Doe',
+        'card_number': '4160239414178485',
         'cvv': 123
     }
 
