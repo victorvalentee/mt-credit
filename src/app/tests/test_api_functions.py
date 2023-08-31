@@ -5,6 +5,7 @@ API functions work as expected
 
 import pytest
 import sqlite3
+from api_functions import get_all_cards
 
 
 # Fixture to set up an in-memory test database
@@ -29,7 +30,7 @@ def test_db():
 
 
 def test_list_all_cards(test_db):
-    actual_result = api_functions.get_all_cards()
+    actual_result = get_all_cards(test_db)
     expected_result = [('2099-04-30', 'VVV', '123abc', 123)]
 
     assert actual_result == expected_result
