@@ -3,10 +3,10 @@ import sqlite3
 def get_all_cards(db_conn):
     cursor = db_conn.cursor()
     cursor.execute("SELECT * FROM cards")
-    card_details = cursor.fetchall()
+    cards_list = cursor.fetchall()
     db_conn.close()
 
-    return card_details
+    return cards_list
 
 
 def get_card_by_id(db_conn, id="123abc456"):
@@ -16,3 +16,19 @@ def get_card_by_id(db_conn, id="123abc456"):
     db_conn.close()
 
     return card_details
+
+
+def create_credit_card(db_conn, credit_card_info: dict):
+    cursor = db_conn.cursor()
+    cursor.execute(f"""
+        INSERT INTO cards (exp_date, holder_name, card_number, cvv) 
+        VALUES ('{credit_card_info['exp_date']}', '{credit_card_info['holder_name']}', '{credit_card_info['card_number']}', {credit_card_info['cvv']});
+    """)
+
+    cursor.execute(f"""
+        SELECT * FROM cards 
+        WHERE card_number = '{credit_card_info['card_number']}'
+            AND holder_name = '{credit_card_info['holder_name']}'
+    """)
+    
+    return cursor.fetchall()

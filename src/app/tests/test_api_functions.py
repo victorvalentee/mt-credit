@@ -5,7 +5,7 @@ API functions work as expected
 
 import pytest
 import sqlite3
-from api_functions import get_all_cards, get_card_by_id
+from api_functions import get_all_cards, get_card_by_id, create_credit_card
 
 
 # Fixture to set up an in-memory test database
@@ -45,4 +45,18 @@ def test_get_card_by_id(test_db):
     actual_result = get_card_by_id(test_db, id="123abc456")
     expected_result = [('2099-04-30', 'Victor Valente', '123abc456', 777)]
 
+    assert actual_result == expected_result
+
+
+def test_create_credit_card(test_db):
+    credit_card_info = {
+        "exp_date": "2099-04-30",
+        "holder_name": "VAV",
+        "card_number": "123abc456",
+        'cvv': 777
+    }
+
+    actual_result = create_credit_card(test_db, credit_card_info)
+    expected_result = [('2099-04-30', 'VAV', '123abc456', 777)]
+   
     assert actual_result == expected_result
