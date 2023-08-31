@@ -1,9 +1,10 @@
+from collections import OrderedDict
+import json
 from flask import Flask, jsonify, request
-from utils import initialize_database
+from utils import get_credit_card_hash, get_obfuscated_card_number, initialize_database
 import api_functions
 import sqlite3
 from creditcard import CreditCard
-from hashlib import sha256
 
 
 app = Flask(__name__)
@@ -31,22 +32,26 @@ def get_credit_card(card_number):
 def store_credit_card():
     data = request.json
 
-    credit_card_info = dict(data)
-    credit_card_id = ''.join(str(info) for info in credit_card_info.values())
-    credit_card_hash = sha256(credit_card_id.encode()).hexdigest()
+    credit_card_info = data
+    # credit_card_info['cvv'] = credit_card_info.get('cvv', None)
+    # credit_card_info['credit_card_hash'] = credit_card_info.get('credit_card_hash', None)
+
+    credit_card_hash = get_credit_card_hash(credit_card_info)
 
     card_number = credit_card_info['card_number']
     
     if CreditCard(card_number).is_valid():
         with sqlite3.connect('../database/credit_cards.db') as db_conn:
             # Retains only the last 4 digits of the credit card number
-            credit_card_info['card_number'] = f'**** **** **** {card_number[-4:]}'
+            credit_card_info['card_number'] = get_obfuscated_card_number(card_number)
             credit_card_info['credit_card_hash'] = credit_card_hash
 
             api_functions.create_credit_card(db_conn, credit_card_info=credit_card_info)
         return jsonify({'message': 'Credit card stored successfully'}), 201
     else:
         return jsonify({'message': 'Credit card number is not valid'}), 400
+
+
 
 
 if __name__ == '__main__':

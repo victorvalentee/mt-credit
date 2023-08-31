@@ -18,11 +18,11 @@ def test_db():
         conn.executescript(schema_sql)
 
         conn.execute(
-            """
-                INSERT INTO cards (exp_date, holder_name, card_number, cvv)
+            f"""
+                INSERT INTO cards (exp_date, holder_name, card_number, cvv, credit_card_hash)
                 VALUES
-                    ('2099-04-01', 'VVV', '123abc', 123),
-                    ('2099-04-15', 'Victor Valente', '123abc456', 777);
+                    ('2099-04-01', 'VVV', '123abc', 123, NULL),
+                    ('2099-04-15', 'Victor Valente', '123abc456', 777, NULL);
             """
         )
 
@@ -34,8 +34,8 @@ def test_db():
 def test_list_all_cards(test_db):
     actual_result = get_all_cards(test_db)
     expected_result = [
-        ('2099-04-30', 'VVV', '123abc', 123), 
-        ('2099-04-30', 'Victor Valente', '123abc456', 777)
+        ('2099-04-30', 'VVV', '123abc', 123, None), 
+        ('2099-04-30', 'Victor Valente', '123abc456', 777, None)
     ]
 
     assert actual_result == expected_result
@@ -43,7 +43,7 @@ def test_list_all_cards(test_db):
 
 def test_get_card_by_id(test_db):
     actual_result = get_card_by_id(test_db, id="123abc456")
-    expected_result = [('2099-04-30', 'Victor Valente', '123abc456', 777)]
+    expected_result = [('2099-04-30', 'Victor Valente', '123abc456', 777, None)]
 
     assert actual_result == expected_result
 
@@ -53,10 +53,11 @@ def test_create_credit_card(test_db):
         "exp_date": "2099-04-30",
         "holder_name": "VAV",
         "card_number": "123abc456",
-        'cvv': 777
+        'cvv': 777,
+        'credit_card_hash': None
     }
 
     actual_result = create_credit_card(test_db, credit_card_info)
-    expected_result = [('2099-04-30', 'VAV', '123abc456', 777)]
+    expected_result = [('2099-04-30', 'VAV', '123abc456', 777, None)]
    
     assert actual_result == expected_result

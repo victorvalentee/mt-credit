@@ -46,7 +46,7 @@ def test_account_holder_length_success(test_db):
     cursor.execute('SELECT * FROM cards;')
     actual_result = cursor.fetchall()
 
-    expected_result = [('2099-04-30', 'VVV', '123abc', None)]
+    expected_result = [('2099-04-30', 'VVV', '123abc', None, None)]
     assert actual_result == expected_result
 
 
@@ -65,8 +65,8 @@ def test_cvv_length_success(test_db):
     actual_result = cursor.fetchall()
 
     expected_result = [
-        ('2099-04-30', 'VVV', '123abc', 123),
-        ('2099-04-30', 'VVV', '123abcd', None)
+        ('2099-04-30', 'VVV', '123abc', 123, None),
+        ('2099-04-30', 'VVV', '123abcd', None, None)
     ]
 
     assert actual_result == expected_result

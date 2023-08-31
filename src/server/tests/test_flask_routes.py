@@ -1,3 +1,5 @@
+import json
+from flask import jsonify
 import pytest
 from server.app import app
 
@@ -12,7 +14,8 @@ def test_store_credit_card_fail(client):
         'exp_date': '2088-12-31',
         'holder_name': 'John Doe',
         'card_number': '8884567890123456',
-        'cvv': 123
+        'cvv': 123,
+        'credit_card_hash': None
     }
 
     response = client.post('/api/v1/credit-card', json=data)
@@ -33,8 +36,8 @@ def test_store_credit_card(client):
 
 def test_get_credit_card(client):
     # Simulate a stored credit card
-    stored_card = [["2055-04-30", "VAV", "1234567890123456", 123]]
+    stored_card = [["2055-04-30", "VAV", "**** **** **** 3456", 123, None]]
 
     # Test the route by sending a GET request
-    response = client.get('/api/v1/credit-card/1234567890123456')
+    response = client.get('/api/v1/credit-card/**** **** **** 3456')
     assert response.json == stored_card
