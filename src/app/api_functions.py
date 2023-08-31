@@ -4,7 +4,6 @@ def get_all_cards(db_conn):
     cursor = db_conn.cursor()
     cursor.execute("SELECT * FROM cards")
     cards_list = cursor.fetchall()
-    db_conn.close()
 
     return cards_list
 
