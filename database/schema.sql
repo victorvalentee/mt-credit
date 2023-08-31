@@ -3,8 +3,8 @@ CREATE TABLE cards (
     exp_date TEXT NOT NULL,
     holder_name TEXT NOT NULL,
     card_number TEXT NOT NULL,
-    cvv INTEGER NOT NULL,
-    PRIMARY KEY(holder_name, card_number, cvv)
+    cvv INTEGER,
+    PRIMARY KEY(holder_name, card_number)
 ) STRICT;
 
 -- As mentioned in the README file, data validation is going to be 
@@ -19,7 +19,7 @@ BEGIN
     WHERE LENGTH(NEW.holder_name) < 3;
 
     SELECT RAISE(ABORT, 'CVV must have either 3 or 4 characters.')
-    WHERE LENGTH(NEW.cvv) < 3 OR LENGTH(NEW.cvv) > 4;
+    WHERE NEW.cvv IS NOT NULL AND (LENGTH(NEW.cvv) < 3 OR LENGTH(NEW.cvv) > 4);
 
     SELECT RAISE(ABORT, '"exp_date" must be in the format YYYY-MM-DD.')
     WHERE DATE(NEW.exp_date) IS NULL;
@@ -35,6 +35,5 @@ BEGIN
     UPDATE cards 
     SET exp_date = DATE(NEW.exp_date, '+1 month', 'start of month', '-1 day')
     WHERE holder_name = NEW.holder_name 
-        AND card_number = NEW.card_number 
-        AND cvv = NEW.cvv;
+        AND card_number = NEW.card_number;
 END;
