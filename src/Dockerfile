@@ -2,12 +2,13 @@ FROM python:3-slim
 
 RUN apt-get update && apt-get -y upgrade && apt install -y git
 
-WORKDIR /app
+WORKDIR /src
 
-COPY requirements.txt /app
+COPY requirements.txt /src
 RUN pip3 install -r requirements.txt
 
-COPY . /app
+COPY . /src
 
+EXPOSE 5000
 ENTRYPOINT ["python3"]
-CMD ["server/app.py"]
+CMD ["./server/app.py"]

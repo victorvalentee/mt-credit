@@ -1,12 +1,17 @@
 from hashlib import sha256
 import sqlite3
 
+
+DATABASE_PATH = '/src/database/credit_cards.db'
+DATABASE_SCHEMA_PATH = '/src/database/schema.sql'
+
+
 def initialize_database():
     # Initialize the database connection
-    with sqlite3.connect('../database/credit_cards.db') as db_conn:
+    with sqlite3.connect(DATABASE_PATH) as db_conn:
         db_cursor = db_conn.cursor()
 
-        with open("../database/schema.sql", "r") as schema_file:
+        with open(DATABASE_SCHEMA_PATH, "r") as schema_file:
             schema_sql = schema_file.read()
             db_conn.executescript(schema_sql)
 
