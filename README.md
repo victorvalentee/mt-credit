@@ -1,3 +1,53 @@
+# mt-credit
+
+## Overview
+
+This application allows you to manage credit card data, providing an API that can retrieve and store credit card information in an SQLite database. 
+
+This README will guide you through the steps of running the API and interacting with it.
+
+## Table of Contents
+
+1. [Features](#features)
+2. [Installation](#installation)
+
+## Features
+
+- Retrieve a list of all credit cards in the database.
+- Retrieve a specific credit card by its card number.
+- Store new credit card data in the database with proper data validation.
+- Securely store credit card data with encryption.
+- Comprehensive data validation triggers to ensure data integrity.
+- Easy-to-use API for interacting with the application.
+
+## Installation
+
+To get started with mt-credit, follow these installation steps:
+
+0. Pre-requisites:
+For this guide to work, you should have the following programs installed:
+    - [`git`](https://git-scm.com/downloads)
+    - [`make`](https://www.gnu.org/software/make/#download)
+    - [Docker](https://www.docker.com/) installed.
+
+1. Clone the repository to your local machine:
+
+    ```bash
+    git clone https://github.com/victorvalentee/mt-credit.git
+    ```
+
+2. Navigate to the project directory:
+
+    ```bash
+    cd mt-credit
+    ```
+
+3. Build the app Docker image:
+
+    ```bash
+    make build
+    ```
+
 ## Architecture Overview
 ![Architecture Overview](docs/img/architecture_overview.png)
 
