@@ -6,6 +6,7 @@ API functions work as expected
 import pytest
 import sqlite3
 from api_functions import get_all_cards, get_card_by_id, create_credit_card
+from utils import DATABASE_SCHEMA_PATH
 
 
 # Fixture to set up an in-memory test database
@@ -13,7 +14,7 @@ from api_functions import get_all_cards, get_card_by_id, create_credit_card
 def test_db():
     conn = sqlite3.connect(':memory:')
 
-    with open("../database/schema.sql", "r") as schema_file:
+    with open(DATABASE_SCHEMA_PATH, "r") as schema_file:
         schema_sql = schema_file.read()
         conn.executescript(schema_sql)
 

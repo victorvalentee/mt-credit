@@ -5,6 +5,7 @@ in-schema data validation rules are valid
 
 import pytest
 import sqlite3
+from utils import DATABASE_SCHEMA_PATH
 
 
 # Fixture to set up an in-memory test database
@@ -12,7 +13,7 @@ import sqlite3
 def test_db():
     conn = sqlite3.connect(':memory:')
 
-    with open("../database/schema.sql", "r") as schema_file:
+    with open(DATABASE_SCHEMA_PATH, "r") as schema_file:
         schema_sql = schema_file.read()
         conn.executescript(schema_sql)
 
