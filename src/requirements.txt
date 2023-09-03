@@ -1,0 +1,5 @@
+pytest ~= 7.4.0
+Flask ~= 2.3.3
+pytest-flask ~=1.2.0
+
+git+https://github.com/maistodos/python-creditcard.git@main
