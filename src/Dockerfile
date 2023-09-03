@@ -10,5 +10,3 @@ RUN pip3 install -r requirements.txt
 COPY . /src
 
 EXPOSE 5000
-ENTRYPOINT ["python3"]
-CMD ["./server/app.py"]
