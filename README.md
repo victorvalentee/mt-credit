@@ -10,25 +10,27 @@ This README will guide you through the steps of running the API and interacting 
 
 1. [Features](#features)
 2. [Installation](#installation)
+3. [Usage](#usage)
+    - [Running the Test Suite](#running-the-test-suite)
+    - [Running the Application](#running-the-application)
+    - [Sending Requests](#sending-requests)
 
 ## Features
 
 - Retrieve a list of all credit cards in the database.
 - Retrieve a specific credit card by its card number.
 - Store new credit card data in the database with proper data validation.
-- Securely store credit card data with encryption.
-- Comprehensive data validation triggers to ensure data integrity.
-- Easy-to-use API for interacting with the application.
+    - Securely store credit card data with encryption.
+    - Comprehensive data validation triggers to ensure data integrity.
 
 ## Installation
 
 To get started with mt-credit, follow these installation steps:
 
-0. Pre-requisites:
-For this guide to work, you should have the following programs installed:
+0. [Pre-requisites] For this guide to work, you should have the following programs installed:
     - [`git`](https://git-scm.com/downloads)
     - [`make`](https://www.gnu.org/software/make/#download)
-    - [Docker](https://www.docker.com/) installed.
+    - [Docker](https://www.docker.com/)
 
 1. Clone the repository to your local machine:
 
@@ -47,6 +49,48 @@ For this guide to work, you should have the following programs installed:
     ```bash
     make build
     ```
+
+## Usage
+
+### Running the Test Suite
+
+There are two test modules: one for the data validation and one for API routes / server functionality.
+
+```bash
+make test
+```
+
+### Running the Application:
+
+This will fire up the Flask server in the container and foward it to the localhost.
+
+**The application will be accessible at `http://localhost:5000`.**
+
+```bash
+make run
+```
+
+### Sending Requests
+
+You can interact with the application by sending HTTP requests. I'm using `curl`, but you can do this with other tools such as [Postman](https://www.postman.com/) and some of these requests can be sent direclty from the browser:
+
+- **List all credit cards:**
+
+  ```bash
+  curl http://localhost:5000/api/v1/credit-card
+  ```
+
+- **Retrieve a specific credit card by card number:**
+
+  ```bash
+  curl http://localhost:5000/api/v1/credit-card/1234567890123456
+  ```
+
+- **Store a new credit card:**
+
+  ```bash
+  curl -X POST -H "Content-Type: application/json" -d '{"exp_date": "2025-12-31", "holder_name": "John Doe", "card_number": "4111111111111111", "cvv": 123}' http://localhost:5000/api/v1/credit-card
+  ```
 
 ## Architecture Overview
 ![Architecture Overview](docs/img/architecture_overview.png)
