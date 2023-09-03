@@ -31,6 +31,7 @@ To get started with mt-credit, follow these installation steps:
     - [`git`](https://git-scm.com/downloads)
     - [`make`](https://www.gnu.org/software/make/#download)
     - [Docker](https://www.docker.com/)
+    - [`curl`](https://curl.se/download.html) [Recommended]
 
 1. Clone the repository to your local machine:
 
