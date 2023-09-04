@@ -3,7 +3,7 @@
 ## This is still a WIP
 As I'm striving to leave this application and documentation as pristine as I can, I'm still working on new functionalities, such as:
 - ~~credit card number encryption~~ (*Done*)
-- credit card number decryption
+- ~~credit card number decryption~~ (*Done*)
 - API authentication
 
 ## Overview
