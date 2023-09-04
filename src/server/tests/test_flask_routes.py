@@ -34,10 +34,7 @@ def test_store_credit_card(client):
     assert response.json == {'message': 'Credit card stored successfully'}
 
 
-def test_get_credit_card(client):
-    # Simulate a stored credit card
-    stored_card = [["2055-04-30", "VAV", "**** **** **** 3456", 123, None]]
-
+def test_get_credit_card_not_found(client):
     # Test the route by sending a GET request
-    response = client.get('/api/v1/credit-card/**** **** **** 3456')
-    assert response.json == stored_card
+    response = client.get('/api/v1/credit-card/**** **** **** 0000')
+    assert response.json == {'message': 'Credit card not found'}

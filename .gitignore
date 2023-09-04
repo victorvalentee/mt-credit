@@ -1,3 +1,6 @@
+# Databases
+*.db
+
 # Encryption keys
 *.key
 

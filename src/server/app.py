@@ -1,7 +1,7 @@
 from collections import OrderedDict
 import json
 from flask import Flask, jsonify, request
-from utils import get_card_number_encrypted, get_obfuscated_card_number, initialize_database
+from utils import get_obfuscated_card_number, initialize_database, aes_encrypt
 import api_functions
 import sqlite3
 from creditcard import CreditCard
@@ -24,7 +24,7 @@ def list_credit_cards():
 @app.route('/api/v1/credit-card/<card_number>', methods=['GET'])
 def get_credit_card(card_number):
     with sqlite3.connect(DATABASE_PATH) as db_conn:
-        credit_card = jsonify(api_functions.get_card_by_id(db_conn, id=card_number))
+        credit_card = api_functions.get_card_by_number(db_conn, str(card_number))
     return credit_card or jsonify({'message': 'Credit card not found'}), 404
 
 
@@ -34,15 +34,14 @@ def store_credit_card():
     data = request.json
 
     credit_card_info = data
-    card_number_encrypted = get_card_number_encrypted(credit_card_info['card_number'])
-
     card_number = credit_card_info['card_number']
+    encrypted_card_number = aes_encrypt(card_number)
     
     if CreditCard(card_number).is_valid():
         with sqlite3.connect(DATABASE_PATH) as db_conn:
             # Retains only the last 4 digits of the credit card number
             credit_card_info['card_number'] = get_obfuscated_card_number(card_number)
-            credit_card_info['card_number_encrypted'] = card_number_encrypted
+            credit_card_info['card_number_encrypted'] = encrypted_card_number
 
             api_functions.create_credit_card(db_conn, credit_card_info=credit_card_info)
         return jsonify({'message': 'Credit card stored successfully'}), 201
