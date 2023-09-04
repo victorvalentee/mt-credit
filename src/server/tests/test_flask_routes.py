@@ -15,7 +15,7 @@ def test_store_credit_card_fail(client):
         'holder_name': 'John Doe',
         'card_number': '8884567890123456',
         'cvv': 123,
-        'credit_card_hash': None
+        'card_number_encrypted': None
     }
 
     response = client.post('/api/v1/credit-card', json=data)

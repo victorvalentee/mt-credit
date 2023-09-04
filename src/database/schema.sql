@@ -4,7 +4,7 @@ CREATE TABLE cards (
     holder_name TEXT NOT NULL,
     card_number TEXT NOT NULL,
     cvv INTEGER,
-    credit_card_hash TEXT,
+    card_number_encrypted BLOB,
     PRIMARY KEY(holder_name, card_number)
 ) STRICT;
 

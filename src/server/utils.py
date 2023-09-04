@@ -44,7 +44,7 @@ def initialize_database():
         ]
 
         for row in initial_rows:
-            db_cursor.execute("INSERT INTO cards (exp_date, holder_name, card_number, cvv, credit_card_hash) VALUES (?, ?, ?, ?, ?)", row)
+            db_cursor.execute("INSERT INTO cards (exp_date, holder_name, card_number, cvv, card_number_encrypted) VALUES (?, ?, ?, ?, ?)", row)
 
         db_conn.commit()
 
@@ -53,12 +53,12 @@ def get_obfuscated_card_number(card_number: str):
     return f'**** **** **** {card_number[-4:]}'
 
 
-def get_credit_card_number_encrypted(credit_card_info: dict):
+def get_card_number_encrypted(credit_card_info: dict):
     with open(KEY_FILE_PATH, 'rb') as key_file:
         encryption_key = key_file.read()
 
-    credit_card_number_encrypted = encrypt(credit_card_info, encryption_key)
-    return credit_card_number_encrypted
+    card_number_encrypted = encrypt(credit_card_info, encryption_key)
+    return card_number_encrypted
 
 
 if __name__ == '__main__':

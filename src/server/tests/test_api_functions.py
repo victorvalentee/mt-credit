@@ -20,7 +20,7 @@ def test_db():
 
         conn.execute(
             f"""
-                INSERT INTO cards (exp_date, holder_name, card_number, cvv, credit_card_hash)
+                INSERT INTO cards (exp_date, holder_name, card_number, cvv, card_number_encrypted)
                 VALUES
                     ('2099-04-01', 'VVV', '123abc', 123, NULL),
                     ('2099-04-15', 'Victor Valente', '123abc456', 777, NULL);
@@ -55,7 +55,7 @@ def test_create_credit_card(test_db):
         "holder_name": "VAV",
         "card_number": "123abc456",
         'cvv': 777,
-        'credit_card_hash': None
+        'card_number_encrypted': None
     }
 
     actual_result = create_credit_card(test_db, credit_card_info)
