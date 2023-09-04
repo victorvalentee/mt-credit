@@ -1,7 +1,7 @@
 from collections import OrderedDict
 import json
 from flask import Flask, jsonify, request
-from utils import get_credit_card_hash, get_obfuscated_card_number, initialize_database
+from utils import get_credit_card_number_encrypted, get_obfuscated_card_number, initialize_database
 import api_functions
 import sqlite3
 from creditcard import CreditCard
@@ -34,10 +34,7 @@ def store_credit_card():
     data = request.json
 
     credit_card_info = data
-    # credit_card_info['cvv'] = credit_card_info.get('cvv', None)
-    # credit_card_info['credit_card_hash'] = credit_card_info.get('credit_card_hash', None)
-
-    credit_card_hash = get_credit_card_hash(credit_card_info)
+    credit_card_number_encrypted = get_credit_card_number_encrypted(credit_card_info)
 
     card_number = credit_card_info['card_number']
     
@@ -45,7 +42,7 @@ def store_credit_card():
         with sqlite3.connect(DATABASE_PATH) as db_conn:
             # Retains only the last 4 digits of the credit card number
             credit_card_info['card_number'] = get_obfuscated_card_number(card_number)
-            credit_card_info['credit_card_hash'] = credit_card_hash
+            credit_card_info['credit_card_number_encrypted'] = credit_card_number_encrypted
 
             api_functions.create_credit_card(db_conn, credit_card_info=credit_card_info)
         return jsonify({'message': 'Credit card stored successfully'}), 201

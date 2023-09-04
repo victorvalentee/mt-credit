@@ -1,10 +1,30 @@
-from hashlib import sha256
 import sqlite3
+from cryptography.fernet import Fernet
 
 
 KEY_FILE_PATH = '/src/encryption.key'
 DATABASE_PATH = '/src/database/credit_cards.db'
 DATABASE_SCHEMA_PATH = '/src/database/schema.sql'
+
+
+def get_encryption_key():
+    with open(KEY_FILE_PATH, 'rb') as key_file:
+        encryption_key = key_file.read()
+    return encryption_key
+
+
+def encrypt(data, encryption_key=None):
+    if not encryption_key:
+        encryption_key = get_encryption_key()
+    cipher_suite = Fernet(encryption_key)
+    return cipher_suite.encrypt(data.encode())
+
+
+def decrypt(data, encryption_key=None):
+    if not encryption_key:
+        encryption_key = get_encryption_key()
+    cipher_suite = Fernet(encryption_key)
+    return cipher_suite.decrypt(data).decode()
 
 
 def initialize_database():
@@ -33,10 +53,12 @@ def get_obfuscated_card_number(card_number: str):
     return f'**** **** **** {card_number[-4:]}'
 
 
-def get_credit_card_hash(credit_card_info: dict):
-    credit_card_id = ''.join(str(info) for info in credit_card_info.values())
-    credit_card_hash = sha256(credit_card_id.encode()).hexdigest()
-    return credit_card_hash
+def get_credit_card_number_encrypted(credit_card_info: dict):
+    with open(KEY_FILE_PATH, 'rb') as key_file:
+        encryption_key = key_file.read()
+
+    credit_card_number_encrypted = encrypt(credit_card_info, encryption_key)
+    return credit_card_number_encrypted
 
 
 if __name__ == '__main__':
