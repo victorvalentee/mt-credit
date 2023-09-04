@@ -1,5 +1,7 @@
 FROM python:3-slim
 
+ENV PYTHONPATH /src/server
+
 RUN apt-get update && apt-get -y upgrade && apt install -y git
 
 WORKDIR /src

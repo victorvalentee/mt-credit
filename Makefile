@@ -7,12 +7,8 @@ build:
 
 # Run tests using pytest
 test:
-	@docker run -it --rm -e PYTHONPATH=/src/server $(DOCKER_IMAGE) sh -c "python3 server/create_encryption_key.py && PYTHONPATH=/src/server; pytest"
+	@docker run -it --rm $(DOCKER_IMAGE) sh -c "python3 server/create_encryption_key.py && pytest"
 
 # Start the Flask server inside the Docker container
 run:
-	docker run -it --rm -p 5000:5000 $(DOCKER_IMAGE) python3 server/create_encryption_key.py; python3 server/app.py
-
-# Generate and store cryptographic key into 'encryption.key' file
-create_encryption_key:
-	docker run -it --rm $(DOCKER_IMAGE) python3 server/create_encryption_key.py
+	docker run -it --rm -p 5000:5000 $(DOCKER_IMAGE) sh -c "python3 server/create_encryption_key.py && python3 server/app.py"
