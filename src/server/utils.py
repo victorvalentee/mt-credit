@@ -2,6 +2,7 @@ from hashlib import sha256
 import sqlite3
 
 
+KEY_FILE_PATH = '/src/encryption.key'
 DATABASE_PATH = '/src/database/credit_cards.db'
 DATABASE_SCHEMA_PATH = '/src/database/schema.sql'
 
